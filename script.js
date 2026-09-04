@@ -1,47 +1,43 @@
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     const pageSections = document.querySelectorAll('.page-section');
-    const navLinksContainer = document.getElementById('navLinks');
+    const serviceCards = document.querySelectorAll('.service-card');
 
-    // Smooth page section navigation with custom dynamic animation
     function showPage(pageId) {
+        if (!pageId) pageId = 'page1';
+
         const targetSection = document.getElementById(pageId);
         const targetLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
 
         if (!targetSection) return;
 
-        // Hide all active sections with slide/fade out
+        // إخفاء كل الصفحات
         pageSections.forEach(section => {
-            if (section.classList.contains('active')) {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(15px)';
-                
-                setTimeout(() => {
-                    section.classList.remove('active');
-                }, 200);
-            }
+            section.classList.remove('active');
         });
 
+        // إزالة حالة النشاط من كل الأزرار
         navLinks.forEach(link => link.classList.remove('active'));
 
-        // Show target section with entrance animation
-        setTimeout(() => {
-            targetSection.classList.add('active');
-            targetSection.style.opacity = '1';
-            targetSection.style.transform = 'translateY(0)';
-            
-            if (targetLink) {
-                targetLink.classList.add('active');
-            }
-        }, 200);
+        // إظهار الصفحة المطلوبة
+        targetSection.classList.add('active');
 
+        // تحديث الزر النشط في الـ Navbar
+        if (targetLink) {
+            targetLink.classList.add('active');
+        } else if (['page3', 'page4', 'page5', 'page6'].includes(pageId)) {
+            const servicesLink = document.querySelector('.nav-link[data-page="page2"]');
+            if (servicesLink) servicesLink.classList.add('active');
+        }
+
+        // التمرير السلس لأعلى المحتوى
         window.scrollTo({
-            top: 150,
+            top: 100,
             behavior: 'smooth'
         });
     }
 
-    // Nav link click event listener
+    // ربط ضغط أزرار القائمة الرئيسية
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -51,13 +47,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle initial Hash load
+    // ربط الضغط على كروت الخدمات
+    serviceCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const targetPage = this.getAttribute('data-target');
+            if (targetPage) {
+                showPage(targetPage);
+                history.pushState(null, null, `#${targetPage}`);
+            }
+        });
+    });
+
+    // قراءة الـ Hash من الرابط
     const initialHash = window.location.hash.substring(1);
     if (initialHash && document.getElementById(initialHash)) {
         showPage(initialHash);
+    } else {
+        showPage('page1');
     }
 
-    // Handle browser back/forward buttons
+    // التناقل بأزرار المتصفح (رجوع / تقدم)
     window.addEventListener('popstate', function() {
         const hash = window.location.hash.substring(1) || 'page1';
         if (document.getElementById(hash)) {

@@ -23,10 +23,11 @@ body {
     line-height: 1.6;
 }
 
+/* Header Setup */
 .site-header {
     background: var(--white);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    padding: 20px 0;
+    padding: 15px 0;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -34,13 +35,21 @@ body {
 
 .header-container {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
 }
 
-/* Vertical Center Alignment: Logo Top -> Text Bottom */
-/* MDC Styled Title */
+.logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+}
+
 .logo-text h1 {
     font-size: 2rem;
     font-weight: 800;
@@ -52,11 +61,9 @@ body {
     text-shadow: 0px 2px 8px rgba(0, 64, 128, 0.15);
 }
 
-/* Logo Animation */
 .logo-img {
-    height: 100px;
+    height: 90px;
     width: auto;
-    margin-top: 30px;
     object-fit: contain;
     transition: transform 0.4s ease, filter 0.4s ease;
     animation: logoFloat 4s ease-in-out infinite;
@@ -68,114 +75,89 @@ body {
 }
 
 @keyframes logoFloat {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-}
-
-/* Page Section Entrance Animation */
-.page-section {
-    display: none;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
-}
-
-.page-section.active {
-    display: block;
-}
-/* Page Section Base & Animation Fix */
-.page-section {
-    display: none;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
-}
-
-/* إظهار الصفحة النشطة فوراً */
-.page-section.active {
-    display: block !important;
-    opacity: 1 !important;
-    transform: translateY(0) !important;
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 .tagline {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--gray);
     font-weight: 600;
 }
 
-.contact-quick-info {
-    font-size: 0.85rem;
-    color: var(--gray);
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-/* Organized Navigation Bar */
+/* Single-Line Scrollable Navigation Bar */
 .main-nav {
     background: var(--primary-color);
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    padding: 8px 0;
+    padding: 6px 0;
+    width: 100%;
 }
 
 .nav-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
     max-width: 1300px;
     margin: 0 auto;
+    padding: 0 5px;
 }
 
 .nav-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--white);
-    font-size: 1.2rem;
-    padding: 10px;
-    cursor: pointer;
+    display: none !important;
 }
 
 .nav-links {
     list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* يمنع نزول الأزرار لسطر ثانٍ */
+    justify-content: flex-start !important; /* يبدأ دائماً بـ About Us و Services */
+    align-items: center;
     gap: 8px;
     width: 100%;
+    padding: 6px 10px;
+    margin: 0;
+    overflow-x: auto !important; /* تفعيل السحب الأفقي */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* إخفاء شريط التمرير */
+.nav-links::-webkit-scrollbar {
+    display: none;
+}
+.nav-links {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .nav-links li {
     display: inline-block;
+    flex-shrink: 0 !important; /* يمنع انكماش الأزرار */
 }
 
 .nav-links li a {
     display: block;
     color: var(--white);
-    padding: 10px 18px;
+    padding: 8px 14px;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
+    white-space: nowrap;
     transition: var(--transition);
     border-bottom: 3px solid transparent;
     border-radius: 6px;
     text-align: center;
+    cursor: pointer;
 }
 
 .nav-links li a:hover, 
 .nav-links li a.active {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.22);
     border-bottom-color: var(--accent-color);
 }
 
+/* Content Layout */
 .main-content {
     position: relative;
-    background-image: url('./background.jpg') !important;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -204,18 +186,16 @@ body {
     margin: 0 auto;
 }
 
+/* Section Switching Styling */
 .page-section {
     display: none;
-    animation: fadeIn 0.5s ease;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .page-section.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    display: block !important;
+    opacity: 1 !important;
 }
 
 .section-header {
@@ -423,14 +403,6 @@ body {
     transition: var(--transition);
 }
 
-.form-group input:focus, 
-.form-group select:focus, 
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 5px rgba(0,64,128,0.2);
-}
-
 .form-buttons {
     display: flex;
     gap: 10px;
@@ -491,49 +463,16 @@ body {
     font-size: 0.85rem;
 }
 
-/* Mobile Responsive Styling */
-   @media(max-width: 768px) {
-    .header-container {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-    /* إخفاء زر الـ Menu نهائياً */
-    .nav-toggle {
-        display: none !important;
-    }
-
-    /* تحويل القائمة إلى سطر أفقي قابل للتمرير بالسحب */
+/* Mobile Responsive */
+@media(max-width: 768px) {
     .nav-links {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        width: 100%;
-        gap: 8px;
-        overflow-x: auto;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-        padding: 5px 10px;
-    }
-
-    /* إخفاء شريط التمرير المزعج */
-    .nav-links::-webkit-scrollbar {
-        display: none;
-    }
-    .nav-links {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    .nav-links li {
-        flex-shrink: 0;
+        gap: 6px;
+        padding: 4px 8px;
     }
 
     .nav-links li a {
-        text-align: center;
-        padding: 8px 14px;
-        font-size: 0.85rem;
+        padding: 6px 12px;
+        font-size: 0.8rem;
     }
 
     .form-grid, .form-grid-2 {
